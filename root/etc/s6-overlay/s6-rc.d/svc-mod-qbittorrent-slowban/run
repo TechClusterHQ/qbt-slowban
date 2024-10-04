@@ -4,6 +4,7 @@ import urllib.request
 import json
 import time
 import logging
+from distutils.util import strtobool
 from os import environ
 
 # Configure logging
@@ -14,7 +15,7 @@ logging.basicConfig(
 qb_port = environ.get("SLOWBAN_QB_PORT", 8080)
 min_speed = int(environ.get("SLOWBAN_MIN_SPEED", 50000))
 threshold_time = int(environ.get("SLOWBAN_THRESHOLD_TIME", 30))
-
+stub_requests = strtobool(environ.get("SLOWBAN_STUB_REQUESTS", False))
 
 def get_json(url):
     try:
@@ -31,14 +32,17 @@ def get_json(url):
 
 
 def ban_peer(torrent_hash, peer):
-    logging.info(f"Peer {peer} banned (torrent {torrent_hash})")
+    
+
+    if stub_requests:
+        logging.info(f"(stubbed) Peer {peer} banned (torrent {torrent_hash})")
+        return
 
     try:
-        #urllib.request.urlopen(
-        #    f"http://localhost:{qb_port}/api/v2/transfer/banPeer&peers={peer}",
-        #    data=None,
-        #)
-        logging.info(f"(stubbed) banned {peer}")
+        urllib.request.urlopen(
+            f"http://localhost:{qb_port}/api/v2/transfer/banPeer&peers={peer}",
+            data=None,
+        )
     except urllib.error.URLError as e:
         logging.error(f"Error occurred while fetching data: {e}")
         return None
@@ -46,6 +50,7 @@ def ban_peer(torrent_hash, peer):
         logging.error(f"Error occurred while parsing JSON: {e}")
         return None
 
+    logging.info(f"Peer {peer} banned (torrent {torrent_hash})")
 
 def find_hashes():
     data = get_json(f"http://localhost:{qb_port}/api/v2/torrents/info?filter=active")
