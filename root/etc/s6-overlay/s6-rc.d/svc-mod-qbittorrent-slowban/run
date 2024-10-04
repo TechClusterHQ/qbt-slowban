@@ -11,9 +11,9 @@ logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
-qb_port = environ.get("QB_PORT", 8080)
-min_speed = int(environ.get("MIN_SPEED", 50000))
-threshold_time = int(environ.get("THRESHOLD_TIME", 30))
+qb_port = environ.get("SLOWBAN_QB_PORT", 8080)
+min_speed = int(environ.get("SLOWBAN_MIN_SPEED", 50000))
+threshold_time = int(environ.get("SLOWBAN_THRESHOLD_TIME", 30))
 
 
 def get_json(url):
