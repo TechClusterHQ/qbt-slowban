@@ -15,7 +15,7 @@ logging.basicConfig(
 qb_port = environ.get("SLOWBAN_QB_PORT", 8080)
 min_speed = int(environ.get("SLOWBAN_MIN_SPEED", 50000))
 threshold_time = int(environ.get("SLOWBAN_THRESHOLD_TIME", 30))
-stub_requests = strtobool(environ.get("SLOWBAN_STUB_REQUESTS", False))
+stub_requests = strtobool(environ.get("SLOWBAN_STUB_REQUESTS", "false"))
 
 def get_json(url):
     try:
