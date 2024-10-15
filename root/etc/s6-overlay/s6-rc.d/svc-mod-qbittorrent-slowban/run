@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/with-contenv python3
 
 import urllib.request
 import json
