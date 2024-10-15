@@ -11,7 +11,7 @@ logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
-qb_port = environ.get("SLOWBAN_QB_PORT", 8080)
+qb_port = environ.get("WEBUI_PORT", 8080)
 min_speed = int(environ.get("SLOWBAN_MIN_SPEED", 50000))
 threshold_time = int(environ.get("SLOWBAN_THRESHOLD_TIME", 30))
 stub_requests = True if environ.get("SLOWBAN_STUB_REQUESTS", "false") == "true" else False
