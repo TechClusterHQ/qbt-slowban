@@ -7,7 +7,7 @@ import logging
 from os import environ
 
 qb_port = environ.get("WEBUI_PORT", 8080)
-min_speed = int(environ.get("SLOWBAN_MIN_SPEED", 5000000)) # in B/s
+min_speed = int(environ.get("SLOWBAN_MIN_SPEED", -1)) # in B/s
 threshold_time = int(environ.get("SLOWBAN_THRESHOLD_TIME", 180)) # in s#
 
 stub_requests = True if environ.get("SLOWBAN_STUB_REQUESTS", "false") == "true" else False
@@ -19,6 +19,9 @@ logging.basicConfig(
 )
 
 low_speed_peers = {}
+
+if min_speed < 0:
+    logging.error("You have to set the SLOWBAN_MIN_SPEED variable to a value that is not negative!")
 
 def get_json(url):
     try:
