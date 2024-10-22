@@ -28,6 +28,8 @@ Start the stack again and check if the script starts banning slow peers. Feel fr
 
 All banned peers are listed in the `qBittorrent.conf` file located in your mounted qBittorrent folder under `State`, then `BannedIPs`. Edit the list as you wish and restart qBittorrent.
 
+## Debugging
+
 Debug/testing variables:
 ```yaml
 - SLOWBAN_LOG_LEVEL=DEBUG # show all logs
