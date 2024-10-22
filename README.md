@@ -22,7 +22,7 @@ Add the following environment variables to your qBittorrent container:
 - SLOWBAN_POLL_INTERVAL=10 # how often to check the peer stats. the default value should be fine
 ```
 
-Start the stack again and check if the script starts banning slow peers. Feel free to open a [GitHub issue](https://github.com/TechClusterHQ/qbt-portchecker/issues) or DM me on Discord (username `app.py`).
+Start the stack again and check if the script starts banning slow peers. Feel free to open a [GitHub issue](https://github.com/TechClusterHQ/qbt-slowban/issues) or DM me on Discord (username `app.py`).
 
 Debug/testing variables:
 ```yaml
