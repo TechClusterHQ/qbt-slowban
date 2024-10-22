@@ -24,6 +24,10 @@ Add the following environment variables to your qBittorrent container:
 
 Start the stack again and check if the script starts banning slow peers. Feel free to open a [GitHub issue](https://github.com/TechClusterHQ/qbt-slowban/issues) or DM me on Discord (username `app.py`).
 
+## Unbanning peers
+
+All banned peers are listed in the `qBittorrent.conf` file located in your mounted qBittorrent folder under `State`, then `BannedIPs`. Edit the list as you wish and restart qBittorrent.
+
 Debug/testing variables:
 ```yaml
 - SLOWBAN_LOG_LEVEL=DEBUG # show all logs
