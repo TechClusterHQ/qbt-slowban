@@ -6,6 +6,7 @@ Docker mod for the [linuxserver.io qbittorrent container](https://docs.linuxserv
 
 - Check if your tracker forbids banning too many peers
 - Banning too many peers might result in you unable to download some files if the only seeders have been banned. Additionally, if the speed at which you could upload to them changes after they're banned, you won't know and keep them banned
+
 In general, use this script at your own risk and carefully think about what might happen if you use it.
 
 ## Installation
