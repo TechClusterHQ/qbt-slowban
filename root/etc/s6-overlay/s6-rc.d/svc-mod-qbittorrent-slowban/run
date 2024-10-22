@@ -1,28 +1,32 @@
 #!/usr/bin/with-contenv python3
 
-import urllib.request
+from urllib import request, parse, error
 import json
 import time
 import logging
 from os import environ
 
-# Configure logging
+qb_port = environ.get("WEBUI_PORT", 8080)
+min_speed = int(environ.get("SLOWBAN_MIN_SPEED", 5000000)) # in B/s
+threshold_time = int(environ.get("SLOWBAN_THRESHOLD_TIME", 180)) # in s#
+
+stub_requests = True if environ.get("SLOWBAN_STUB_REQUESTS", "false") == "true" else False
+poll_interval = float(environ.get("SLOWBAN_POLL_INTERVAL", 10))
+log_level = environ.get("SLOWBAN_LOG_LEVEL", "INFO").upper()
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+    level=getattr(logging, log_level, logging.INFO), 
+    format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
-qb_port = environ.get("WEBUI_PORT", 8080)
-min_speed = int(environ.get("SLOWBAN_MIN_SPEED", 50000))
-threshold_time = int(environ.get("SLOWBAN_THRESHOLD_TIME", 30))
-stub_requests = True if environ.get("SLOWBAN_STUB_REQUESTS", "false") == "true" else False
+low_speed_peers = {}
 
 def get_json(url):
     try:
-        res = urllib.request.urlopen(url)
+        res = request.urlopen(url)
         res_body = res.read()
         json_response = json.loads(res_body.decode("utf-8"))
         return json_response
-    except urllib.error.URLError as e:
+    except error.URLError as e:
         logging.error(f"Error occurred while fetching data: {e}")
         return None
     except json.JSONDecodeError as e:
@@ -31,18 +35,19 @@ def get_json(url):
 
 
 def ban_peer(torrent_hash, peer):
-    
-
     if stub_requests:
         logging.info(f"(stubbed) Peer {peer} banned (torrent {torrent_hash})")
         return
 
     try:
-        urllib.request.urlopen(
-            f"http://localhost:{qb_port}/api/v2/transfer/banPeer&peers={peer}",
-            data=None,
+        data = parse.urlencode({"peers": peer}).encode()
+        req = request.Request(
+            f"http://localhost:{qb_port}/api/v2/transfer/banPeers",
+            data=data
         )
-    except urllib.error.URLError as e:
+        request.urlopen(req)
+        logging.info("Peer {peer} banned (torrent {torrent_hash})")
+    except error.URLError as e:
         logging.error(f"Error occurred while fetching data: {e}")
         return None
     except json.JSONDecodeError as e:
@@ -57,35 +62,49 @@ def find_hashes():
     for torrent in data:
         if torrent["amount_left"] == 0:
             torrent_hashes.append(torrent["hash"])
+    logging.debug(f"Active torrents: {torrent_hashes}")
     return torrent_hashes
 
 
-def monitor_peers(torrent_hash, low_speed_peers):
+def monitor_peers(torrent_hash):
+    global low_speed_peers
     data = get_json(
         f"http://localhost:{qb_port}/api/v2/sync/torrentPeers?hash={torrent_hash}"
     )
     if data and "peers" in data:
         current_time = time.time()
-        for peer, info in data["peers"].items():
-            up_speed = info.get("up_speed", 0)
-            if up_speed < min_speed:
-                if peer not in low_speed_peers:
-                    low_speed_peers[peer] = current_time
-                elif current_time - low_speed_peers[peer] >= threshold_time:
-                    ban_peer(torrent_hash, peer)
-            else:
-                if peer in low_speed_peers:
-                    del low_speed_peers[peer]
+        current_peers = set(data["peers"].keys())
 
+        if torrent_hash not in low_speed_peers:
+            low_speed_peers[torrent_hash] = {}
+
+        for peer, info in data["peers"].items():
+            upload_speed = info.get("up_speed", 0)
+            if upload_speed < min_speed:
+                if peer not in low_speed_peers[torrent_hash]:
+                    low_speed_peers[torrent_hash][peer] = current_time
+                elif current_time - low_speed_peers[torrent_hash][peer] > threshold_time:
+                    ban_peer(torrent_hash, peer)
+                    del low_speed_peers[torrent_hash][peer]
+            else:
+                if peer in low_speed_peers[torrent_hash]:
+                    del low_speed_peers[torrent_hash][peer]
+
+        for peer in list(low_speed_peers[torrent_hash].keys()):
+            if peer not in current_peers:
+                logging.debug(f"Deleting peer {peer}")
+                del low_speed_peers[torrent_hash][peer]
+
+        logging.debug(f"Peers at risk for torrent {torrent_hash}: {low_speed_peers[torrent_hash]}")
 
 def main():
-    torrent_hashes = find_hashes()
-    low_speed_peers = {torrent_hash: {} for torrent_hash in torrent_hashes}
 
     while True:
+        torrent_hashes = find_hashes()
         for torrent_hash in torrent_hashes:
-            monitor_peers(torrent_hash, low_speed_peers[torrent_hash])
-        time.sleep(3)
+            monitor_peers(torrent_hash)
+        logging.debug("Sleeping")
+        time.sleep(poll_interval)
 
 
 if __name__ == "__main__":
