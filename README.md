@@ -23,7 +23,7 @@ Add the following environment variables to your qBittorrent container:
 
 Start the stack again and check if the script starts banning slow peers. Feel free to open a [GitHub issue](https://github.com/TechClusterHQ/qbt-portchecker/issues) or DM me on Discord (username `app.py`).
 
-Debug/testubg variables:
+Debug/testing variables:
 ```yaml
 - SLOWBAN_LOG_LEVEL=DEBUG # show all logs
 - SLOWBAN_STUB_REQUESTS=true # don't ban anyone but rather log a message when someone is under the threshold (requires loglevel debug)
