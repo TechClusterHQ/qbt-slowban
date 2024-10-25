@@ -1,4 +1,4 @@
-# qbt-portchecker
+# qbt-slowban
 
 Docker mod for the [linuxserver.io qbittorrent container](https://docs.linuxserver.io/images/docker-qbittorrent) that automatically bans peers who are leeching off of you slowly over a period of time. Banning slow leechers can help increase your HDD's lifespan and reduce the load put on it as random reads (which happen when someone leeches different parts of the file from you) are reduced.
 
