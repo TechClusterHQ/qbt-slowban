@@ -31,7 +31,7 @@ This helps making sure that false positives don't cause much harm because all ba
 Make sure to have set the TZ environment variable to your timezone, refer to [this list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List) for possible values.
 
 You need a cron schedule that specifies when all peers should be unbanned, https://crontab.guru is a useful tool for this.\
-Common examples:
+Common examples ([more](https://crontab.guru/examples.html)):
 - `0 0 * * *` run at midnight every day (recommended)
 - `0 0 * * 1` run at midnight only on mondays
 - `0 0 1 * *` run at midnight on the first day of the month
