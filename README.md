@@ -24,6 +24,23 @@ Add the following environment variables to your qBittorrent container:
 
 Start the stack again and check if the script starts banning slow peers. Feel free to open a [GitHub issue](https://github.com/TechClusterHQ/qbt-slowban/issues) or DM me on Discord (username `app.py`).
 
+## Unbanning peers automatically on a schedule
+
+This helps making sure that false positives don't cause much harm because all banned peers are unbanned frequently.
+
+Make sure to have set the TZ environment variable to your timezone, refer to [this list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List) for possible values.
+
+You need a cron schedule that specifies when all peers should be unbanned, https://crontab.guru is a useful tool for this.\
+Common examples:
+- `0 0 * * *` run at midnight every day (recommended)
+- `0 0 * * 1` run at midnight only on mondays
+- `0 0 1 * *` run at midnight on the first day of the month
+
+Set it as an environment variable:
+```yaml
+- SLOWBAN_CLEAR_PERIODICALLY=0 0 * * *
+```
+
 ## Unbanning peers manually
 
 In the qBittorrent Web Interface, edit the IPs in the "Manually banned IP addresses" textbox in the "Connection" tab.
