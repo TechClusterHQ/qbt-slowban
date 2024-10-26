@@ -10,7 +10,7 @@ qb_port = environ.get("WEBUI_PORT", 8080)
 min_speed = int(environ.get("SLOWBAN_MIN_SPEED", -1)) # in B/s
 threshold_time = int(environ.get("SLOWBAN_THRESHOLD_TIME", 180)) # in s#
 
-clear_periodically = int(environ.get("SLOWBAN_CLEAR_PERIODICALLY", ""))
+clear_periodically = environ.get("SLOWBAN_CLEAR_PERIODICALLY", "")
 
 stub_requests = True if environ.get("SLOWBAN_STUB_REQUESTS", "false") == "true" else False
 poll_interval = float(environ.get("SLOWBAN_POLL_INTERVAL", 10))
