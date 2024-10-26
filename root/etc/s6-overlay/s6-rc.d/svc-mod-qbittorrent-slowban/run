@@ -4,11 +4,13 @@ from urllib import request, parse, error
 import json
 import time
 import logging
-from os import environ
+from os import environ, system
 
 qb_port = environ.get("WEBUI_PORT", 8080)
 min_speed = int(environ.get("SLOWBAN_MIN_SPEED", -1)) # in B/s
 threshold_time = int(environ.get("SLOWBAN_THRESHOLD_TIME", 180)) # in s#
+
+clear_periodically = environ.get("SLOWBAN_CLEAR_PERIODICALLY", "")
 
 stub_requests = True if environ.get("SLOWBAN_STUB_REQUESTS", "false") == "true" else False
 poll_interval = float(environ.get("SLOWBAN_POLL_INTERVAL", 10))
@@ -19,6 +21,10 @@ logging.basicConfig(
 )
 
 low_speed_peers = {}
+
+if clear_periodically != "":
+    system(f'(crontab -l 2>/dev/null; echo "{clear_periodically} /clean-banlist.sh") | crontab -')
+    logging.info("set up cronjob")
 
 if min_speed < 0:
     logging.error("You have to set the SLOWBAN_MIN_SPEED variable to a value that is not negative!")
