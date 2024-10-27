@@ -27,7 +27,7 @@ Start the stack again and check if the script starts banning slow peers. Feel fr
 ## Unbanning peers automatically on a schedule
 
 This helps making sure that false positives don't cause much harm because all banned peers are unbanned frequently.\
-Note: This will unban all peers, even those not banned by qbt-slowban. Refer to the option below to specify peers that should be banned permanently.
+Note: This will unban all peers, including those not banned by qbt-slowban. Refer to the option below to specify peers that should be banned permanently.
 
 Make sure to have set the TZ environment variable to your timezone, refer to [this list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List) for possible values.
 
