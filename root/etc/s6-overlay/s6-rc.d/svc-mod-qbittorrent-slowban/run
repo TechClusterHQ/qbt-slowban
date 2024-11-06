@@ -1,6 +1,7 @@
 #!/usr/bin/with-contenv python3
 
 from urllib import request, parse, error
+from urllib.error import URLError, HTTPError
 import json
 import time
 import logging
@@ -30,7 +31,7 @@ while True:
         if response.getcode() == 200:
             logging.info("web ui online")
             break
-    except requests.RequestException:
+    except (URLError, HTTPError):
         pass
     
     time.sleep(1)
