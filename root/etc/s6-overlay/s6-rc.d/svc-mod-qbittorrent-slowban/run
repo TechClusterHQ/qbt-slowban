@@ -26,8 +26,8 @@ logging.info("waiting for web ui")
 
 while True:
     try:
-        response = requests.get(f"http://localhost:{qb_port}/api/v2/app/version", timeout=5)
-        if response.status_code == 200:
+        response = request.urlopen(f"http://localhost:{qb_port}/api/v2/app/version")
+        if response.getcode() == 200:
             logging.info("web ui online")
             break
     except requests.RequestException:
