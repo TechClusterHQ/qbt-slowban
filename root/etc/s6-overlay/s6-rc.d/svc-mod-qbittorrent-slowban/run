@@ -22,6 +22,19 @@ logging.basicConfig(
 
 low_speed_peers = {}
 
+logging.info("waiting for web ui")
+
+while True:
+    try:
+        response = requests.get(f"http://localhost:{qb_port}/api/v2/app/version", timeout=5)
+        if response.status_code == 200:
+            logging.info("web ui online")
+            break
+    except requests.RequestException:
+        pass
+    
+    time.sleep(1)
+
 if clear_periodically != "":
     system(f'(crontab -l 2>/dev/null; echo "{clear_periodically} /clean-banlist.sh") | crontab -')
     logging.info("set up cronjob")
