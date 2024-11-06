@@ -22,6 +22,12 @@ Add the following environment variables to your qBittorrent container:
 - SLOWBAN_POLL_INTERVAL=10 # how often to check the peer stats. the default value should be fine
 ```
 
+> [!NOTE]  
+> If you are already using another docker mod with your qBittorrent container you have to combine both into one DOCKER_MODS variable, seperated by a pipe:
+> ```yaml
+> - DOCKER_MODS=ghcr.io/techclusterhq/qbt-slowban:main|ghcr.io/techclusterhq/qbt-portchecker:main
+> ```
+
 Start the stack again and check if the script starts banning slow peers. Feel free to open a [GitHub issue](https://github.com/TechClusterHQ/qbt-slowban/issues) or DM me on Discord (username `app.py`).
 
 ## Unbanning peers automatically on a schedule
