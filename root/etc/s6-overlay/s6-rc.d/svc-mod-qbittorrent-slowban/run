@@ -55,7 +55,6 @@ def ban_peer(torrent_hash, peer):
             data=data
         )
         request.urlopen(req)
-        logging.info("Peer {peer} banned (torrent {torrent_hash})")
     except error.URLError as e:
         logging.error(f"Error occurred while fetching data: {e}")
         return None
