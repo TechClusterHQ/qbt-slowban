@@ -18,7 +18,8 @@ poll_interval = float(environ.get("SLOWBAN_POLL_INTERVAL", 10))
 log_level = environ.get("SLOWBAN_LOG_LEVEL", "INFO").upper()
 logging.basicConfig(
     level=getattr(logging, log_level, logging.INFO), 
-    format="%(asctime)s - %(levelname)s - %(message)s"
+    format='%(asctime)s (qbt-slowban) %(message)s',
+    datefmt='%Y.%m.%dT%H:%M:%S'
 )
 
 low_speed_peers = {}
