@@ -14,18 +14,16 @@ In general, use this script at your own risk and carefully think about what migh
 First, enable the option "Bypass authentication for clients on localhost" in the qBittorrent settings under the "Web UI" tab
 
 Add the following environment variables to your qBittorrent container:
-```yaml
-- WEBUI_PORT=8080 # if it doesn't exist already and you changed the port from the default 8080
-- DOCKER_MODS=ghcr.io/techclusterhq/qbt-slowban:main
-- SLOWBAN_THRESHOLD_TIME=180 # in seconds
-- SLOWBAN_MIN_SPEED= # if a peer downloads from you slower than this speed for the specified timeframe, they will be banned (in B/s)
-- SLOWBAN_POLL_INTERVAL=10 # how often to check the peer stats. the default value should be fine
-```
+- `WEBUI_PORT=8080`: If it doesn't exist already and you changed the port from the default 8080
+- `DOCKER_MODS=ghcr.io/techclusterhq/qbt-slowban:main`
+- `SLOWBAN_THRESHOLD_TIME=180`: In seconds
+- `SLOWBAN_MIN_SPEED=`: If a peer downloads from you slower than this speed for the specified timeframe, they will be banned (in B/s)
+- `SLOWBAN_POLL_INTERVAL=10`: How often to check the peer stats. the default value should be fine
 
 > [!NOTE]  
 > If you are already using another docker mod with your qBittorrent container you have to combine both into one DOCKER_MODS variable, seperated by a pipe:
 > ```yaml
-> - DOCKER_MODS=ghcr.io/techclusterhq/qbt-slowban:main|ghcr.io/techclusterhq/qbt-portchecker:main
+> DOCKER_MODS=ghcr.io/techclusterhq/qbt-slowban:main|ghcr.io/techclusterhq/qbt-portchecker:main
 > ```
 
 Start the stack again and check if the script starts banning slow peers. Feel free to open a [GitHub issue](https://github.com/TechClusterHQ/qbt-slowban/issues) or DM me on Discord (username `app.py`).
@@ -60,7 +58,5 @@ In the qBittorrent Web Interface, edit the IPs in the "Manually banned IP addres
 ## Debugging
 
 Debug/testing variables:
-```yaml
-- SLOWBAN_LOG_LEVEL=DEBUG # show all logs
-- SLOWBAN_STUB_REQUESTS=true # don't ban anyone but rather log a message when someone is under the threshold (requires loglevel debug)
-```
+- `SLOWBAN_LOG_LEVEL=DEBUG`: Show all logs
+- `SLOWBAN_STUB_REQUESTS=true`: Don't ban anyone but rather log a message when someone is under the threshold (requires loglevel debug)
