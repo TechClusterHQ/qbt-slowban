@@ -37,13 +37,13 @@ Make sure to have set the TZ environment variable to your timezone, refer to [th
 
 You need a cron schedule that specifies when all peers should be unbanned, https://crontab.guru is a useful tool for this.\
 Common examples ([more](https://crontab.guru/examples.html)):
-- `0 0 * * *` run at midnight every day (recommended)
-- `0 0 * * 1` run at midnight only on mondays
-- `0 0 1 * *` run at midnight on the first day of the month
+- `0 12 * * *` run at noon every day (recommended)
+- `0 12 * * 1` run at noon only on mondays
+- `0 12 1 * *` run at noon on the first day of the month
 
 Set it as an environment variable:
 ```yaml
-- SLOWBAN_CLEAR_PERIODICALLY=0 0 * * *
+- SLOWBAN_CLEAR_PERIODICALLY=0 12 * * *
 ```
 
 If you want specific peers to be permanently banned, even when the list is cleared, you can specify them using the following environment variable (comma-seperated, no spaces inbetween):
