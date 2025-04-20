@@ -18,7 +18,7 @@ Add the following environment variables to your qBittorrent container:
 - `DOCKER_MODS=ghcr.io/techclusterhq/qbt-slowban:main`
 - `SLOWBAN_THRESHOLD_TIME=180`: In seconds
 - `SLOWBAN_MIN_SPEED=`: If a peer downloads from you slower than this speed for the specified timeframe, they will be banned (in B/s)
-- `SLOWBAN_POLL_INTERVAL=10`: How often to check the peer stats. the default value should be fine
+- `SLOWBAN_POLL_INTERVAL=10`: How often to check the peer stats. The default value should be fine
 
 > [!NOTE]  
 > If you are already using another docker mod with your qBittorrent container you have to combine both into one DOCKER_MODS variable, seperated by a pipe:
@@ -43,12 +43,12 @@ Common examples ([more](https://crontab.guru/examples.html)):
 
 Set it as an environment variable:
 ```yaml
-- SLOWBAN_CLEAR_PERIODICALLY=0 12 * * *
+SLOWBAN_CLEAR_PERIODICALLY=0 12 * * *
 ```
 
 If you want specific peers to be permanently banned, even when the list is cleared, you can specify them using the following environment variable (comma-seperated, no spaces inbetween):
 ```yaml
-- SLOWBAN_BANNED_PEERS=1.1.1.1,8.8.8.8
+SLOWBAN_BANNED_PEERS=1.1.1.1,8.8.8.8
 ```
 
 ## Unbanning peers manually
