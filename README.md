@@ -51,6 +51,11 @@ If you want specific peers to be permanently banned, even when the list is clear
 SLOWBAN_BANNED_PEERS=1.1.1.1,8.8.8.8
 ```
 
+> [!NOTE]  
+> If it looks like the banlist has not been modified properly in the web ui, chances are it's just a caching issue.
+> Force-reloading the page by using Shift+F5 (with most browsers) should fix this issue.
+
+
 ## Unbanning peers manually
 
 In the qBittorrent Web Interface, edit the IPs in the "Manually banned IP addresses" textbox in the "Connection" tab.
