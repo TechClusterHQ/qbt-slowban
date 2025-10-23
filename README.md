@@ -26,7 +26,7 @@ Add the following environment variables to your qBittorrent container:
 > DOCKER_MODS=ghcr.io/techclusterhq/qbt-slowban:main|ghcr.io/techclusterhq/qbt-portchecker:main
 > ```
 
-Start the stack again and check if the script starts banning slow peers. Feel free to open a [GitHub issue](https://github.com/TechClusterHQ/qbt-slowban/issues) or DM me on Discord (username `app.py`).
+Start the stack again and check if the script starts banning slow peers. Feel free to open a [GitHub issue](https://github.com/TechClusterHQ/qbt-slowban/issues) or DM me on Discord (username `tech_cluster`).
 
 ## Unbanning peers automatically on a schedule
 
